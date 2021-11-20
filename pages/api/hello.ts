@@ -1,13 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { open } from 'sqlite'
+import { Database } from 'sqlite3'
+import User from '../../models/User'
 
 type Data = {
   name: string
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<User[]>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  const db = await open({filename: 'poll-database.sqlite', driver: Database})
+  const users = await db.all('SELECT * FROM users') as User[]
+  res.json(users)
 }
