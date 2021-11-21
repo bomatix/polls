@@ -1,0 +1,1 @@
+export const STRING_ID_LENGTH = 10
